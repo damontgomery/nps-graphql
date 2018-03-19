@@ -2,7 +2,8 @@
   "name": "nps-graphql",
   "version": "1.0.0",
   "description": "GraphQL server for National Park Service API",
-  "main": "index.js",
+  "main": "server.js",
+  "repository": "https://github.com/damontgomery/nps-graphql",
   "dependencies": {
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
