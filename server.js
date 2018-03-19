@@ -1,9 +1,10 @@
 var express = require('express');
 var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
+var { makeExecutableSchema } = require('graphql-tools');
 var { api } = require('./src/nps-api');
 
-var schema = buildSchema(`
+// This uses the Apollo graphql-tools pattern.
+var typeDefs = `
   type Query {
     parks (parkCode: String, stateCode: String): [Park]
   }
@@ -20,21 +21,27 @@ var schema = buildSchema(`
     directionsInfo: String,
     weatherInfo: String
   }
-`);
+`;
 
 class Park {
   constructor() {
   }
 }
 
-var root = {
-  parks: ({parkCode, stateCode}) => api.parks(parkCode, stateCode)
+var resolvers = {
+  Query: {
+    parks: (obj, {parkCode, stateCode}) => api.parks(parkCode, stateCode)
+  }
 }
+
+var schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
 
 var app = express();
 app.use('/graphql', graphqlHTTP({
   schema: schema,
-  rootValue: root,
   graphiql: true,
 }));
 app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'));
