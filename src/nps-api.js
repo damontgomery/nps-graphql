@@ -39,7 +39,9 @@ class NPSAPI {
    *
    * @function parks
    *
-   * @param id
+   * @param parkCode
+   *
+   * @param stateCode
    *
    * @return {Promise}
    *   Returns a promise that resolves to parks.
