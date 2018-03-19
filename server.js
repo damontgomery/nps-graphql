@@ -1,22 +1,28 @@
-var yaml = require('node-yaml')
 var express = require('express');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
-
-var config;
-
-// This is asynchronous.
-yaml.read('config.yml', function(error, data) {
-  config = data;
-});
+var { api } = require('./src/nps-api');
 
 var schema = buildSchema(`
   type Query {
-    hello: String
+    parks (parkCode: String!): [Park]
+  }
+
+  type Park {
+    description: String,
+    fullName: String,
+    id: ID
   }
 `);
 
-var root = { hello: () => 'Hello world!' };
+class Park {
+  constructor() {
+  }
+}
+
+var root = {
+  parks: ({parkCode}) => api.parks(parkCode)
+}
 
 var app = express();
 app.use('/graphql', graphqlHTTP({

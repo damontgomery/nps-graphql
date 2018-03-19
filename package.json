@@ -8,6 +8,7 @@
     "express-graphql": "^0.6.12",
     "graphql": "^0.13.2",
     "graphsql": "^0.0.0",
+    "node-fetch": "^2.1.1",
     "node-yaml": "^3.1.1"
   },
   "devDependencies": {},
