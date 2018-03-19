@@ -47,7 +47,10 @@ class NPSAPI {
    *   Returns a promise that resolves to parks.
    */
   parks(parkCode = null, stateCode = null) {
-    var params = [];
+    // Images are not included by default.
+    var params = [
+      'fields=images'
+    ];
 
     if (parkCode !== null){
       params.push(`parkCode=${parkCode}`);
@@ -62,7 +65,9 @@ class NPSAPI {
 
   park(parkCode = null) {
     var params = [
-      `parkCode=${parkCode}`
+      `parkCode=${parkCode}`,
+      // Images are not included by default.
+      'fields=images'
     ];
 
     return this.getSingle('parks', params);

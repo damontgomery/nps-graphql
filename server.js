@@ -15,7 +15,8 @@ var typeDefs = `
     url: String,
     directionsUrl: String,
     directionsInfo: String,
-    weatherInfo: String
+    weatherInfo: String,
+    images: [Image]
   }
 
   type VisitorCenter {
@@ -26,6 +27,15 @@ var typeDefs = `
     directionsUrl: String,
     description: String,
     park: Park
+  }
+
+  type Image {
+    credit: String,
+    altText: String,
+    title: String,
+    id: ID,
+    caption: String,
+    url: String
   }
 
   type Query {
