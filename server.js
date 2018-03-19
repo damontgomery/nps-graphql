@@ -6,41 +6,106 @@ var { api } = require('./src/nps-api');
 // This uses the Apollo graphql-tools pattern.
 var typeDefs = `
   type Park {
-    description: String,
-    name: String,
-    fullName: String,
-    id: ID,
-    parkCode: String,
-    designation: String,
-    url: String,
-    directionsUrl: String,
-    directionsInfo: String,
-    weatherInfo: String,
+    description: String
+    name: String
+    fullName: String
+    id: ID
+    parkCode: String
+    designation: String
+    url: String
+    directionsUrl: String
+    directionsInfo: String
+    weatherInfo: String
     images: [Image]
   }
 
   type VisitorCenter {
-    directionsInfo: String,
-    name: String,
-    url: String,
-    id: ID,
-    directionsUrl: String,
-    description: String,
+    directionsInfo: String
+    name: String
+    url: String
+    id: ID
+    directionsUrl: String
+    description: String
     park: Park
   }
 
   type Image {
-    credit: String,
-    altText: String,
-    title: String,
-    id: ID,
-    caption: String,
+    credit: String
+    altText: String
+    title: String
+    id: ID
+    caption: String
     url: String
   }
 
+  enum State {
+    AL
+    AK
+    AZ
+    AR
+    CA
+    CO
+    CT
+    DE
+    FL
+    GA
+    HI
+    ID
+    IL
+    IN
+    IA
+    KS
+    KY
+    LA
+    ME
+    MD
+    MA
+    MI
+    MN
+    MS
+    MO
+    MT
+    NE
+    NV
+    NH
+    NJ
+    NM
+    NY
+    NC
+    ND
+    OH
+    OK
+    OR
+    PA
+    RI
+    SC
+    SD
+    TN
+    TX
+    UT
+    VT
+    VA
+    WA
+    WV
+    WI
+    WY
+    AS
+    DC
+    FM
+    GU
+    MH
+    MP
+    PW
+    PR
+    VI
+    AE
+    AA
+    AP
+  }
+
   type Query {
-    parks (parkCode: String, stateCode: String): [Park],
-    visitorCenters (parkCode: String, stateCode: String): [VisitorCenter],
+    parks (parkCode: String, stateCode: State): [Park],
+    visitorCenters (parkCode: String, stateCode: State): [VisitorCenter],
   }
 `;
 
