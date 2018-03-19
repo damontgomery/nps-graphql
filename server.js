@@ -5,10 +5,6 @@ var { api } = require('./src/nps-api');
 
 // This uses the Apollo graphql-tools pattern.
 var typeDefs = `
-  type Query {
-    parks (parkCode: String, stateCode: String): [Park]
-  }
-
   type Park {
     description: String,
     name: String,
@@ -21,6 +17,21 @@ var typeDefs = `
     directionsInfo: String,
     weatherInfo: String
   }
+
+  type VisitorCenter {
+    directionsInfo: String,
+    name: String,
+    url: String,
+    id: ID,
+    directionsUrl: String,
+    description: String,
+    park: Park
+  }
+
+  type Query {
+    parks (parkCode: String, stateCode: String): [Park],
+    visitorCenters (parkCode: String, stateCode: String): [VisitorCenter],
+  }
 `;
 
 class Park {
@@ -28,9 +39,15 @@ class Park {
   }
 }
 
+class VisitorCenter {}
+
 var resolvers = {
   Query: {
-    parks: (obj, {parkCode, stateCode}) => api.parks(parkCode, stateCode)
+    parks: (obj, {parkCode, stateCode}) => api.parks(parkCode, stateCode),
+    visitorCenters: (obj, {parkCode, stateCode}) => api.visitorCenters(parkCode, stateCode),
+  },
+  VisitorCenter: {
+    park: (visitorCenter) => api.park(visitorCenter.parkCode)
   }
 }
 

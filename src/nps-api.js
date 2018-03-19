@@ -57,12 +57,51 @@ class NPSAPI {
       params.push(`stateCode=${stateCode}`);
     }
 
-    var url = `${this.url}parks?${params.join('&')}${this.auth}`;
+    return this.getMultiple('parks', params);
+  }
 
-    return fetch(url)
+  park(parkCode = null) {
+    var params = [
+      `parkCode=${parkCode}`
+    ];
+
+    return this.getSingle('parks', params);
+  }
+
+  visitorCenters(parkCode = null, stateCode = null) {
+    var params = [];
+
+    if (parkCode !== null){
+      params.push(`parkCode=${parkCode}`);
+    }
+
+    if (stateCode !== null){
+      params.push(`stateCode=${stateCode}`);
+    }
+
+    return this.getMultiple('visitorCenters', params);
+  }
+
+  fetchWrapper(endpoint, params) {
+    var url = `${this.url}${endpoint}?${params.join('&')}${this.auth}`;
+
+    return fetch(url).catch(this.handleErrors);
+  }
+
+  getSingle(endpoint, params) {
+    var fetchObj = this.fetchWrapper(endpoint, params);
+
+    return fetchObj
       .then(res => res.json())
-      .then(json => json.data)
-      .catch(this.handleErrors);
+      .then(json => json.data.shift());
+  }
+
+  getMultiple(endpoint, params) {
+    var fetchObj = this.fetchWrapper(endpoint, params);
+
+    return fetchObj
+      .then(res => res.json())
+      .then(json => json.data);
   }
 }
 
