@@ -17,6 +17,7 @@ var typeDefs = `
     directionsInfo: String
     weatherInfo: String
     images: [Image]
+    coordinates: Coordinates
   }
 
   type VisitorCenter {
@@ -36,6 +37,12 @@ var typeDefs = `
     id: ID
     caption: String
     url: String
+  }
+
+  type Coordinates {
+    latlong: String
+    lat: String
+    long: String
   }
 
   enum State {
@@ -109,17 +116,33 @@ var typeDefs = `
   }
 `;
 
-class Park {
-  constructor() {
+class Park {}
+
+class VisitorCenter {}
+
+class Coordinates {
+  constructor (latLongString = null) {
+    if (latLongString === '' || latLongString === null) {
+      this.lat = null;
+      this.long = null;
+    }
+    else {
+      var latLongValues = latLongString.match(/-*\d+\.\d+/g);
+      this.lat = latLongValues[0];
+      this.long = latLongValues[1];
+    }
   }
 }
 
-class VisitorCenter {}
+class Image {}
 
 var resolvers = {
   Query: {
     parks: (obj, {parkCode, stateCode}) => api.parks(parkCode, stateCode),
     visitorCenters: (obj, {parkCode, stateCode}) => api.visitorCenters(parkCode, stateCode),
+  },
+  Park: {
+    coordinates: (park) => new Coordinates(park.latLong)
   },
   VisitorCenter: {
     park: (visitorCenter) => api.park(visitorCenter.parkCode)
