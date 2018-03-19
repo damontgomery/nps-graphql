@@ -44,9 +44,18 @@ class NPSAPI {
    * @return {Promise}
    *   Returns a promise that resolves to parks.
    */
-  parks(id = null) {
-    var params = `parkCode=${id}`;
-    var url = `${this.url}parks?${params}${this.auth}`;
+  parks(parkCode = null, stateCode = null) {
+    var params = [];
+
+    if (parkCode !== null){
+      params.push(`parkCode=${parkCode}`);
+    }
+
+    if (stateCode !== null){
+      params.push(`stateCode=${stateCode}`);
+    }
+
+    var url = `${this.url}parks?${params.join('&')}${this.auth}`;
 
     return fetch(url)
       .then(res => res.json())

@@ -5,13 +5,20 @@ var { api } = require('./src/nps-api');
 
 var schema = buildSchema(`
   type Query {
-    parks (parkCode: String!): [Park]
+    parks (parkCode: String, stateCode: String): [Park]
   }
 
   type Park {
     description: String,
+    name: String,
     fullName: String,
-    id: ID
+    id: ID,
+    parkCode: String,
+    designation: String,
+    url: String,
+    directionsUrl: String,
+    directionsInfo: String,
+    weatherInfo: String
   }
 `);
 
@@ -21,7 +28,7 @@ class Park {
 }
 
 var root = {
-  parks: ({parkCode}) => api.parks(parkCode)
+  parks: ({parkCode, stateCode}) => api.parks(parkCode, stateCode)
 }
 
 var app = express();
