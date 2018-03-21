@@ -2,6 +2,7 @@ var express = require('express');
 var graphqlHTTP = require('express-graphql');
 var { makeExecutableSchema } = require('graphql-tools');
 var { api } = require('./src/nps-api');
+var cors = require('cors')
 
 // This uses the Apollo graphql-tools pattern.
 var typeDefs = `
@@ -155,6 +156,7 @@ var schema = makeExecutableSchema({
 });
 
 var app = express();
+app.use(cors()); // enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   graphiql: true,
