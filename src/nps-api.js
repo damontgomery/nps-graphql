@@ -14,9 +14,15 @@ class NPSAPI {
    *  @function constructor
    */
   constructor() {
-    var config = yaml.readSync('../config.yml');
+    // Check environmental variables (which we can use with Heroku) first and fall back to a configuration file.
+    if (process.env.NPS_API_KEY){
+      this.auth = process.env.NPS_API_KEY;
+    }
+    else {
+      var config = yaml.readSync('../config.yml');
+      this.auth = `&api_key=${config['nps-api-key']}`;
+    }
 
-    this.auth = `&api_key=${config['nps-api-key']}`;
     this.url = 'https://developer.nps.gov/api/v1/';
   }
 
