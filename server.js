@@ -155,10 +155,13 @@ var schema = makeExecutableSchema({
   resolvers,
 });
 
+// Set the port. Allow Heroku to set the port as well, or use 4000.
+var port = process.env.PORT || 4000;
+
 var app = express();
 app.use(cors()); // enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   graphiql: true,
 }));
-app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'));
+app.listen(port, () => console.log('Now browse to localhost:4000/graphql'));
